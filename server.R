@@ -51,17 +51,24 @@ shinyServer(function(input, output) {
     layout(matrix(c(1,2),ncol=1),heights=c(3.5,1))
     
     par(mar=c(0,4,2,2))
-    if(logaxis=="Log"){
-      plot(meas$age_ma,meas$length,xaxt="n",xlab="",ylab=paste(input$bodypart,"length (mm)"),
-           xlim=rev(range(meas$age_ma,na.rm=T)),log="y",lwd=2,col=c("chocolate3","slategray4")[meas$amber],bty="n")
-    }
-    else {plot(meas$age_ma,meas$length,xaxt="n",xlab="",ylab=paste(input$bodypart,"length (mm)"),
-          xlim=rev(range(meas$age_ma,na.rm=T)),lwd=2,col=c("chocolate3","slategray4")[meas$amber],bty="n")}
-    mtext(paste(input$taxon," (",nrow(meas)," specimens from ",length(unique(meas$species))," species)",sep=""),side=3,adj=0,cex=1.5)
+    if(nrow(meas)>0) {
+      if(logaxis=="Log"){
+        plot(meas$age_ma,meas$length,xaxt="n",xlab="",ylab=paste(input$bodypart,"length (mm)"),
+             xlim=rev(range(meas$age_ma,na.rm=T)),log="y",lwd=2,col=c("chocolate3","slategray4")[meas$amber],bty="n")
+      }
+      else {plot(meas$age_ma,meas$length,xaxt="n",xlab="",ylab=paste(input$bodypart,"length (mm)"),
+                 xlim=rev(range(meas$age_ma,na.rm=T)),lwd=2,col=c("chocolate3","slategray4")[meas$amber],bty="n")}
+      mtext(paste(input$taxon," (",nrow(meas)," specimens from ",length(unique(meas$species))," species)",sep=""),side=3,adj=0,cex=1.5)
+    } 
+      else {plot(0,0,type="n",xlim=c(350,0),ylim=c(0,1),ylab="",xlab="",xaxt="n",yaxt="n",bty="n")
+          text(175,0.5,paste("There are no records of",input$taxon,"in the PaleobioDB"),cex=1.5)}
     
     par(mar=c(5,4,0,2))
     par(mgp=c(2,0.75,0))
-    plot(0,0,type="n",xlim=rev(range(meas$age_ma,na.rm=T)),xlab="Age (Ma)",yaxt="n",ylab="",ylim=c(0,5),bty="n")
+    if(nrow(meas)>0) {
+      plot(0,0,type="n",xlim=rev(range(meas$age_ma,na.rm=T)),xlab="Age (Ma)",yaxt="n",ylab="",ylim=c(0,5),bty="n")
+    }
+    else {plot(0,0,type="n",xlim=c(350,0),xlab="Age (Ma)",yaxt="n",ylab="",ylim=c(0,5),bty="n")}
     rect(periods$early_age,0,periods$late_age,5,col=paste(periods$color))
     text(rowMeans(cbind(periods$early_age,periods$late_age)),rep(2.5,nrow(periods)),periods$abbrev)
     })
