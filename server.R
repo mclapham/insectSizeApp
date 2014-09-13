@@ -61,7 +61,7 @@ shinyServer(function(input, output) {
       mtext(paste(input$taxon," (",nrow(meas)," specimens from ",length(unique(meas$species))," species)",sep=""),side=3,adj=0,cex=1.5)
     } 
       else {plot(0,0,type="n",xlim=c(350,0),ylim=c(0,1),ylab="",xlab="",xaxt="n",yaxt="n",bty="n")
-          text(175,0.5,paste("There are no records of",input$taxon,"in the PaleobioDB"),cex=1.5)}
+          text(175,0.5,paste("There are no measurements of",input$taxon,"in the PaleobioDB"),cex=1.25)}
     
     par(mar=c(5,4,0,2))
     par(mgp=c(2,0.75,0))
